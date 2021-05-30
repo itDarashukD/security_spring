@@ -1,7 +1,6 @@
-package com.example.security.security;
+package com.example.security.securityConfig;
 
 
-import com.example.security.role.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +32,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*")// on this page password do not needs/"/8080"
                 .permitAll()//index - file from resouces/static
+                .antMatchers("/api/**").hasRole(STUDENT.name())    //now all request after /api/... can see only Student. Admin cat not do this
                 .anyRequest()
                 .authenticated()
                 .and()
