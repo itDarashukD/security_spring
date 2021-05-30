@@ -1,6 +1,7 @@
 package com.example.security.security;
 
 
+import com.example.security.role.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import static com.example.security.role.ApplicationUserRole.ADMIN;
+import static com.example.security.role.ApplicationUserRole.STUDENT;
 
 @Configuration
 @EnableWebSecurity
@@ -42,9 +46,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .username("annaSmith")
                 .password(passwordEncoder.encode("password")) //aply to "password" BC encoding
                 // now enter http request only with name/password, password automatically encoded with BCryption
-                .roles("STUDENT") // One of the ROLE
+                .roles(STUDENT.name()) //  //his role student
                 .build();
 
-        return new InMemoryUserDetailsManager(annaSmithUser);
+        UserDetails linda = User.builder()  //create second user
+                .username("linda")
+                .password(passwordEncoder.encode("password123"))
+                .roles(ADMIN.toString())   //his role administrator
+                .build();
+
+        return new InMemoryUserDetailsManager(
+                annaSmithUser
+                ,linda);
     }
 }
